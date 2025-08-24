@@ -1,9 +1,9 @@
-# 📂 Структура Orchestrator Service
+# 📂 Структура Aggregator Service
 
 ---
 
 ```bash
-orchestrator/
+Aggregator/
 ├── src/
 │   ├── api/
 │   │   ├── __init__.py
@@ -44,7 +44,7 @@ orchestrator/
 
 # ⚙️ Логика работы
 
-1. **Gateway → Orchestrator**
+1. **Gateway → Aggregator**
     
     - Приходит запрос поиска (`search: "айфон"`, `categories: ["phones"]`).
         
@@ -56,7 +56,7 @@ orchestrator/
         
     - В задаче: `request_id`, `query`, `filters`.
         
-3. **Scrapers → Orchestrator (Consumer)**
+3. **Scrapers → Aggregator (Consumer)**
     
     - Скрапперы возвращают результаты с этим `request_id`.
         

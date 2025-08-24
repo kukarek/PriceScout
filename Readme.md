@@ -25,7 +25,7 @@ Client (CLI/Web/Postman)
         ▼
  [GraphQL Gateway] ───► [Auth & Billing] ─► PG (users, plans)
         │
-        ├──► [Search Orchestrator] ──► [AI Router (GPT API)]
+        ├──► [Aggregator] ──► [AI Router (GPT API)]
         │                  │
         │                  ├─► [Scraper: WB]
         │                  ├─► [Scraper: Ozon]
@@ -48,7 +48,7 @@ Queue:   RabbitMQ/Kafka
         
     - Проверяет JWT у Auth-сервиса.
         
-    - Делает запросы в Orchestrator.
+    - Делает запросы в Aggregator.
         
     - Отправляет события в Analytics.
         
@@ -62,7 +62,7 @@ Queue:   RabbitMQ/Kafka
         
     - Таблицы: `users`, `plans`, `subscriptions`.
         
-3. **Search Orchestrator**
+3. **Aggregator**
     
     - Получает запрос от Gateway.
         

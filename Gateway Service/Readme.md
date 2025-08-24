@@ -26,7 +26,7 @@ gateway/
 │   │   └── security.py       # JWT, OAuth2, проверка подписки
 │   │
 │   ├── services/
-│   │   ├── orchestrator_client.py  # gRPC/HTTP клиент к оркестратору
+│   │   ├── Aggregator_client.py  # gRPC/HTTP клиент к оркестратору
 │   │   └── user_service_client.py  # клиент для сервиса пользователей/биллинга
 │   │
 │   ├── models/
@@ -59,11 +59,11 @@ gateway/
     
     - Проверяет токен, подписку и лимиты.
         
-3. **Gateway → Orchestrator**
+3. **Gateway → Aggregator**
     
     - Пробрасывает запрос поиска (HTTP/gRPC).
         
-4. **Orchestrator → Gateway → Клиент**
+4. **Aggregator → Gateway → Клиент**
     
     - Возвращает агрегированные результаты.
         

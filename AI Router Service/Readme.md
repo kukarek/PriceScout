@@ -3,11 +3,11 @@
 
 ## **1. Логика работы AI Router как маршрутизатора**
 
-1. **Gateway → Orchestrator → AI Router**
+1. **Gateway → Aggregator → AI Router**
     
     - Приходит запрос пользователя: `"айфон"`
         
-    - Orchestrator передаёт его в AI Router с `request_id` и контекстом (категории, фильтры).
+    - Aggregator передаёт его в AI Router с `request_id` и контекстом (категории, фильтры).
         
 2. **AI Router принимает решение о скрапперах**
     
@@ -21,11 +21,11 @@
 }
 ```
 
-3. **Отправка результата обратно в Orchestrator**
+3. **Отправка результата обратно в Aggregator**
     
-    - Orchestrator получает список скрапперов, которые должны выполнить поиск.
+    - Aggregator получает список скрапперов, которые должны выполнить поиск.
         
-    - Orchestrator кладёт задачи для этих скрапперов в очередь.
+    - Aggregator кладёт задачи для этих скрапперов в очередь.
         
 
 ---
@@ -38,10 +38,10 @@ ai_router/
 │   ├── services/
 │   │   ├── router.py          # Основной модуль маршрутизации
 │   │   ├── ai_client.py       # (опционально) для классификации/ML
-│   │   └── result_sender.py   # Отправка списка скрапперов в Orchestrator
+│   │   └── result_sender.py   # Отправка списка скрапперов в Aggregator
 │   │
 │   ├── consumers/
-│   │   └── orchestrator_consumer.py  # Слушает новые запросы поиска
+│   │   └── Aggregator_consumer.py  # Слушает новые запросы поиска
 │   │
 │   ├── models/
 │   │   ├── task.py             # TaskRequest, TaskResult
@@ -50,7 +50,7 @@ ai_router/
 │   └── main.py                 # FastAPI + consumer
 ```
 
-- **TaskRequest**: приходит от Orchestrator
+- **TaskRequest**: приходит от Aggregator
     
 
 ```python
@@ -60,7 +60,7 @@ class TaskRequest(BaseModel):
     categories: list[str]
 ```
 
-- **ScraperRouteResponse**: возвращается в Orchestrator
+- **ScraperRouteResponse**: возвращается в Aggregator
     
 
 ```python
@@ -74,11 +74,11 @@ class ScraperRouteResponse(BaseModel):
 ## **3. Поток данных**
 
 ```
-Client → Gateway → Orchestrator → AI Router
+Client → Gateway → Aggregator → AI Router
 AI Router: решает, какие скрапперы нужны
-AI Router → Orchestrator: ["WB", "Ozon", "Avito"]
-Orchestrator → очередь → Scrapers (каждый получает request_id)
-Scrapers → Orchestrator → Aggregator → Gateway → Client
+AI Router → Aggregator: ["WB", "Ozon", "Avito"]
+Aggregator → очередь → Scrapers (каждый получает request_id)
+Scrapers → Aggregator → Aggregator → Gateway → Client
 ```
 
 ---

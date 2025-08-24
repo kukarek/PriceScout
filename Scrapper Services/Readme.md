@@ -18,10 +18,10 @@ scraper_service/
 │   ├── services/
 │   │   ├── fetcher.py          # Основной модуль для получения данных с маркетплейсов
 │   │   ├── parser.py           # Парсинг HTML/API ответа в модель продукта
-│   │   └── result_sender.py    # Отправка результата в Orchestrator через очередь
+│   │   └── result_sender.py    # Отправка результата в Aggregator через очередь
 │   │
 │   ├── consumers/
-│   │   └── orchestrator_consumer.py  # Слушает задачи поиска с Orchestrator
+│   │   └── Aggregator_consumer.py  # Слушает задачи поиска с Aggregator
 │   │
 │   ├── models/
 │   │   ├── product.py          # Pydantic модели Product, ScraperResult
@@ -44,9 +44,9 @@ scraper_service/
 
 # ⚙️ Логика работы Scraper
 
-1. **Orchestrator → Scraper**
+1. **Aggregator → Scraper**
     
-    - Orchestrator отправляет задачу через очередь (`request_id`, `query`, `filters`)
+    - Aggregator отправляет задачу через очередь (`request_id`, `query`, `filters`)
         
 2. **Consumer получает задачу**
     
@@ -60,7 +60,7 @@ scraper_service/
         
     - Parser преобразует данные в **модель продукта**
         
-4. **Result Sender → Orchestrator**
+4. **Result Sender → Aggregator**
     
     - Отправляет результаты в очередь `scraper.results` с `request_id`
         
@@ -125,7 +125,7 @@ class TaskStatus(BaseModel):
 # 🔹 Поток данных
 
 ```
-Orchestrator → scraper.tasks (queue)
+Aggregator → scraper.tasks (queue)
          │
          ▼
      Scraper Consumer
@@ -133,7 +133,7 @@ Orchestrator → scraper.tasks (queue)
      Fetcher → Parser → Product
          │
          ▼
-   scraper.results (queue) → Orchestrator
+   scraper.results (queue) → Aggregator
          │
    analytics.events (queue) → Analytics Service
 ```
