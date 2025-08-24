@@ -1,0 +1,21 @@
+# IDE
+.vscode/
+
+# Секреты
+.env
+
+# Логи
+*.log
+
+#Виртуальное окружение
+venv/
+
+#Кэши python
+__pycache__/
+*.pyc
+
+#Статика в сборе
+staticfiles/
+
+# Выгрузка данных
+export_data.py
